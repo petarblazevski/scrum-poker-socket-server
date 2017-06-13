@@ -12,7 +12,7 @@ app.get('/', function(req, res) {
 io.on('connection', function(socket) {
     console.log('a user connected');
 
-    socket.on('disconnect', function() {
+    socket.on('disconnect', function(socket) {
         console.log('user disconnected');
     })
 
@@ -21,9 +21,13 @@ io.on('connection', function(socket) {
         socket.join(room);
     })
 
+    socket.on('leaveRoom', function(room) {
+    	console.log('User left the room: ', room);
+    	socket.leave(room);
+    })
+
     socket.on('message', function(id, msg) {
-    	console.log(id);
-    	console.log(msg);
+    	console.log(id + ': ' + msg);
     	socket.broadcast.to(id).emit('message', msg);
     })
 })
