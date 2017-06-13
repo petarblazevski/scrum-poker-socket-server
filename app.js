@@ -16,8 +16,15 @@ io.on('connection', function(socket) {
         console.log('user disconnected');
     })
 
-    socket.on('room-1', function(msg) {
-        console.log(msg);
+    socket.on('room', function(room) {
+    	console.log('User will join room: ' + room);
+        socket.join(room);
+    })
+
+    socket.on('message', function(id, msg) {
+    	console.log(id);
+    	console.log(msg);
+    	socket.broadcast.to(id).emit('message', msg);
     })
 })
 
